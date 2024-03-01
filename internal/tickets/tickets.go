@@ -115,22 +115,38 @@ func GetPassengersByTimeOfDay()map [string] int {
 
 
 // Requerimiento  3
-func GetAverageDestination(destination string,) (int, error) {
+func GetAverageDestination(destination string) (float64, error) {
 	ticketList := loadTickets()
 
-	destinationTickets := 0
-	totalTickets := 0
+	DestinationTickets := 0
+	TotalTickets := 0
 
 	for _, ticket := range ticketList{
 		if strings.EqualFold(ticket.DestinationCountry, destination){
-			destinationTickets ++
+			DestinationTickets ++
 		}
-		totalTickets ++
+		TotalTickets ++
 	}
 
+	if TotalTickets == 0 {
+		return 0, fmt.Errorf("No se encontraron tickets")
+	}
+	
+	average := (float64 (DestinationTickets) / float64 (TotalTickets)) * 100
 
+	fmt.Printf("Porcentaje de personas que viajan a %s: %.2f%%\n", destination, average, )
 
-
-
-	return 1, nil
+	return average, nil
 }
+
+
+
+
+
+
+
+
+
+
+
+	
