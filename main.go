@@ -9,5 +9,8 @@ import (
 func main() {
 
 	 tickets.GetTotalTickets("Japan")
+
+	 tickets.GetPassengersByTimeOfDay()
+
 	
 }

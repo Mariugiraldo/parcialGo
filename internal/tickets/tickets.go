@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Ticket struct {
@@ -52,6 +53,8 @@ func loadTickets() []Ticket {
 	
 }
 
+
+// Requerimiento 1
 func GetTotalTickets(destination string) (int, error) {
 	var ticketList = loadTickets()
 
@@ -69,12 +72,65 @@ func GetTotalTickets(destination string) (int, error) {
 	return total, nil
 }
 
-// ejemplo 2
-func GetMornings(time string) (int, error) {
-	return 1, nil
+// Requerimiento 2
+func GetPassengersByTimeOfDay()map [string] int {
+	
+	ticketList := loadTickets()
+
+    var madrugadaCount, mañanaCount, tardeCount, nocheCount int
+
+	for _, ticket := range ticketList {
+        flightTime, err := time.Parse("15:04", ticket.FlightTime)
+        if err != nil {
+            fmt.Println("Error al analizar la hora de vuelo:", err)
+            continue
+        }
+
+        hour := flightTime.Hour()
+        if hour >= 0 && hour < 6 {
+            madrugadaCount++
+        } else if hour >= 6 && hour < 12 {
+            mañanaCount++
+        } else if hour >= 12 && hour < 20 {
+            tardeCount++
+        } else {
+            nocheCount++
+        }
+    }
+
+    passengerCountByTimeOfDay := map[string]int{
+        "Madrugada": madrugadaCount,
+        "Mañana":    mañanaCount,
+        "Tarde":     tardeCount,
+        "Noche":     nocheCount,
+    }
+
+    fmt.Println("Cantidad de pasajeros por franja horaria:")
+    for key, value := range passengerCountByTimeOfDay {
+        fmt.Printf("%s: %d\n", key, value)
+    }
+
+    return passengerCountByTimeOfDay
 }
 
-// ejemplo 3
-func AverageDestination(destination string, total int) (int, error) {
+
+// Requerimiento  3
+func GetAverageDestination(destination string,) (int, error) {
+	ticketList := loadTickets()
+
+	destinationTickets := 0
+	totalTickets := 0
+
+	for _, ticket := range ticketList{
+		if strings.EqualFold(ticket.DestinationCountry, destination){
+			destinationTickets ++
+		}
+		totalTickets ++
+	}
+
+
+
+
+
 	return 1, nil
 }
