@@ -12,8 +12,9 @@ func main() {
 	passengerCountChan := make(chan map[string]int)
 	averageChan := make(chan float64)
 
+	destination := "Utrecht"
 	go func() {
-		total, _ := tickets.GetTotalTickets("Brazil")
+		total, _ := tickets.GetTotalTickets(destination)
 		totalTicketsChan <- total
 	}()
 	go func() {
@@ -22,7 +23,7 @@ func main() {
 	}()
 
 	go func() {
-		averange, _ := tickets.GetAverageDestination("Brazil")
+		averange, _ := tickets.GetAverageDestination(destination)
 		averageChan <- averange
 	}()
 
@@ -33,7 +34,7 @@ func main() {
 	}()
 
 	totalTickets := <-totalTicketsChan
-	fmt.Printf("Total de tickets para Japan: %d\n", totalTickets)
+	fmt.Printf("Total de tickets para: %d\n", totalTickets)
 
 	passengerCount := <-passengerCountChan
 	fmt.Println("Cantidad de pasajeros por franja horaria:")
@@ -42,7 +43,7 @@ func main() {
 	}
 
 	average := <-averageChan
-	fmt.Printf("Porcentaje de personas que viajan a Brazil: %.2f%%\n", average)
+	fmt.Printf("Porcentaje de personas que viajan a %s: %.2f%%\n", destination, average)
 
 	close(totalTicketsChan)
 	close(passengerCountChan)

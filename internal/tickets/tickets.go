@@ -74,10 +74,10 @@ func GetPassengersByTimeOfDay() map[string]int {
 
 	ticketList := loadTickets()
 
-	var madrugadaCount, mañanaCount, tardeCount, nocheCount int
+	var dawnCount, morningCount, afternoonCount, eveningCount int
 
 	for _, ticket := range ticketList {
-		flightTime, err := time.Parse("15:04", ticket.FlightTime)
+		flightTime, err := time.Parse("HH:mm", ticket.FlightTime)
 		if err != nil {
 			fmt.Println("Error al analizar la hora de vuelo:", err)
 			continue
@@ -85,21 +85,21 @@ func GetPassengersByTimeOfDay() map[string]int {
 
 		hour := flightTime.Hour()
 		if hour >= 0 && hour < 6 {
-			madrugadaCount++
+			dawnCount++
 		} else if hour >= 6 && hour < 12 {
-			mañanaCount++
+			morningCount++
 		} else if hour >= 12 && hour < 20 {
-			tardeCount++
+			afternoonCount++
 		} else {
-			nocheCount++
+			eveningCount++
 		}
 	}
 
 	passengerCountByTimeOfDay := map[string]int{
-		"Madrugada": madrugadaCount,
-		"Mañana":    mañanaCount,
-		"Tarde":     tardeCount,
-		"Noche":     nocheCount,
+		"Madrugada": dawnCount,
+		"Mañana":    morningCount,
+		"Tarde":     afternoonCount,
+		"Noche":     eveningCount,
 	}
 
 	fmt.Println("Cantidad de pasajeros por franja horaria:")
